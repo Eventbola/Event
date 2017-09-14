@@ -7,7 +7,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class Sendmail extends Mailable
+class AccetpInvitation extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -28,6 +28,6 @@ class Sendmail extends Mailable
      */
     public function build()
     {
-        return $this->markdown('view.name');
+        return $this->markdown('AcceptInvitation');
     }
 }

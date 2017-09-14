@@ -7,18 +7,21 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class Sendmail extends Mailable
+class Invitation extends Mailable
 {
     use Queueable, SerializesModels;
+    /**
+     * @var int
+     */
+    protected $param;
 
     /**
-     * Create a new message instance.
-     *
-     * @return void
+     * Invitation constructor.
+     * @param $param
      */
-    public function __construct()
+    public function __construct($param)
     {
-        //
+        $this->param = $param;
     }
 
     /**
@@ -28,6 +31,6 @@ class Sendmail extends Mailable
      */
     public function build()
     {
-        return $this->markdown('view.name');
+        return $this->markdown('=invitation')->with(['param' => $this->param]);
     }
 }

@@ -15,24 +15,27 @@ class CreateRequestsTable extends Migration
     {
         Schema::create('requests', function (Blueprint $table) {
             $table->increments('id')->unsigned();
-            $table->integer('event_user_event_id')->unsigned();
-            $table->integer('user_inviter_id')->unsigned();
-            $table->integer('user_invited_id')->unsigned();
-            $table->string('activity');
-            $table->timestamps();
-
-            $table->foreign('event_user_event_id')
+            $table->integer('event_id')->unsigned();
+            $table->foreign('event_id')
                 ->references('id')
                 ->on('events')
                 ->onDelete('cascade');
+
+            $table->integer('user_inviter_id')->unsigned();
             $table->foreign('user_inviter_id')
                 ->references('id')
                 ->on('users')
                 ->onDelete('cascade');
+            $table->integer('user_invited_id')->unsigned();
             $table->foreign('user_invited_id')
                 ->references('id')
                 ->on('users')
                 ->onDelete('cascade');
+            $table->boolean('confirmed')->default(0);
+            $table->string('token', 254)->nullable;
+            $table->rememberToken();
+            $table->timestamps();
+
         });
     }
 

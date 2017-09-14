@@ -54,6 +54,7 @@
         <!-- Scripts -->
         @yield('before-scripts')
         {{--{!! Html::script(mix('js/frontend.js')) !!}--}}
+
         <script src="{{ asset('library/bootstrap/js/bootstrap.js')}}"></script>
         <script src="{{ asset('library/bootstrap/js/jquery.min.js')}}"></script>
         <script type="text/javascript" src="{{ asset('bower_components/jquery/dist/jquery.min.js') }}"></script>

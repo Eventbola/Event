@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Request;
+use App\Models\Request as RequestEmail;
+use Illuminate\Http\Request;
 
 class RequestController extends Controller
 {
@@ -34,7 +35,14 @@ class RequestController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $event = new RequestEmail();
+        $event->user_inviter_id = $request->user_event_id;
+        $event->user_invited_id = $request->user;
+        $event->event_id = $request->event;
+        $event->_token = $request->_token;
+
+        $event->save();
+            return redirect(route('manage')) ;
     }
 
     /**
@@ -77,7 +85,8 @@ class RequestController extends Controller
      * @param  \App\Models\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request){
+    public function destroy(Request $request)
+    {
         //
     }
 }

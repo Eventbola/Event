@@ -7,7 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Request extends Model
 {
-    public function requests(){
+    public function request(){
         return $this->belongsTo(User::class);
     }
+
+//    public function
+
 }

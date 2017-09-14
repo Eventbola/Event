@@ -1,5 +1,4 @@
-
-<nav class="navbar navbar-default" style="background-color:white;padding:12px;font-size: 18px">
+<nav class="navbar navbar-default" style="background-color:white;padding:12px">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
@@ -21,18 +20,20 @@
                     {{--<li>{{ link_to_route('frontend.user.dashboard', trans('navs.frontend.dashboard'), [], ['class' => active_class(Active::checkRoute('frontend.user.dashboard')) ]) }}</li>--}}
                 @endif
                 @if (! $logged_in_user)
-                    <li>{{ link_to_route('frontend.auth.login', trans('navs.frontend.login'), [] ) }}</li>
+
+                    <li>{{ link_to_route('frontend.auth.login', trans('navs.frontend.login'), [], ['class' => active_class(Active::checkRoute('frontend.auth.login'))]) }}</li>
                     @if (config('access.users.registration'))
-                        <li>{{ link_to_route('frontend.auth.register', trans('navs.frontend.register-kh'), []) }}</li>
+                        <li>{{ link_to_route('frontend.auth.register', trans('navs.frontend.register-kh'), [], ['class' => active_class(Active::checkRoute('frontend.auth.register')) ]) }}</li>
                     @endif
                 @else
                     <li>{{ link_to_route('create', trans('navs.frontend.create')) }}</li>
+                    <li>@include('frontend/Event/email')</li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"
                            style="position:relative; padding-left:50px;">
-                            <img src="/img/profile/{{ Auth::user()->image}}"
+                            <img src="img/profile/{{ Auth::user()->image }}" alt="no-image"
                                  style="width:32px; height:32px; position:absolute; top:10px; left:10px; border-radius:50%">
-                            {{ Auth::user()->name}} <span class="caret"></span>
+                            {{ Auth::user()->name }} <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu" role="menu">
                             @permission('view-backend')

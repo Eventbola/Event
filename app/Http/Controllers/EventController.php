@@ -2,16 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\Invitation;
 use App\Models\Access\User\User;
 use Carbon\Carbon;
 use Faker\Provider\DateTime;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Event;
 use Illuminate\Http\Request;
 use app\Item;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Response;
 use Intervention\Image\Facades\Image;
+use App\Models\Request as sent;
 
 class EventController extends Controller
 {
@@ -20,7 +24,11 @@ class EventController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-
+//    public function home()
+//    {
+//
+//        return view('event.index');
+//    }
 
     public function index()
     {
@@ -85,10 +93,14 @@ class EventController extends Controller
             return redirect('login');
         }
 
-        $id = auth()->id();
-        $events = Event::get()->all();
+        $users = User::all();
+
+        $requests = sent::get()->all();
+
         $events = Event::where('user_id', auth()->id())->orderBy('id', 'DESC')->get();
-        return view('frontend.Event.manage', compact('events'));
+
+
+        return view('frontend.Event.manage', compact('events', 'users', 'requests'));
 
 
     }
@@ -144,8 +156,15 @@ class EventController extends Controller
      */
     public function destroy($id)
     {
+        $requests = \App\Models\Request::where('event_id', $id)->get();
+        foreach ($requests as $request) {
+            $request->delete();
+        }
+
         $delete = Event::findOrFail($id);
         $delete->delete();
+
+
         return redirect('event/manage');
     }
 
@@ -241,36 +260,85 @@ class EventController extends Controller
         return response()->json($data);
     }
 
-    public function ind(){
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function ind()
+    {
         $msg = "This is a simple message.";
-        return response()->json(array('msg'=> $msg), 200);
+        return response()->json(array('msg' => $msg), 200);
     }
 
+    /**
+     * @return mixed
+     */
     public function liveSearch()
     {
-        if(\request('key') != ''){
+        if (\request('key') != '') {
             $events = Event::all();
         }
-        $events = Event::where('title', 'like', '%'.request('key').'%')->get();
+        $events = Event::where('title', 'like', '%' . request('key') . '%')->get();
 
         return Response::json(['status' => true, 'data' => $events]);
     }
 
+    /**
+     * @return $this
+     */
     public function home()
-        {
-            $event=Event::all();
-            return view('event.index')->with('events',$event);
-        }
-
-    public function searchdata()
     {
-        if (\request('key')!=''){
-            $events=Event::all();
-        }
-        $events=Event::where('title','LIKE', '%'.request('key').'%')->get();
-        return Response::json(['status' => true, 'data' => $events]);
-
+        $event=Event::all();
+        return view('event.index')->with('events',$event);
     }
 
+    /**
+     * @param Request $request
+     * @return bool|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function email(Request $request)
+    {
+        $email = $request->email;
+        Mail::to($email)
+            ->send(new Invitation($request->event));
 
+        if (Mail::failures()) {
+            return false;
+        } else {
+            $sent = new sent();
+            $sent->user_inviter_id = $request->user_event_id;
+            $sent->user_invited_id = $request->user;
+            $sent->event_id = $request->event;
+            $sent->_token = $request->_token;
+
+            $sent->save();
+
+        }
+        return redirect(route('manage'));
+    }
+
+    /**
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function aa($id)
+    {
+        return view('frontend.Event.manage');
+    }
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function request()
+    {
+        return view('frontend/Event/request');
+    }
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function accept()
+    {
+        return view('frontend/Event/email');
+    }
 }
+
