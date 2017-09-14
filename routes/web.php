@@ -70,7 +70,6 @@ Route::get('event/today', 'EventController@today')->name('today');
 Route::get('event/tomorrow', 'EventController@tomorrow')->name('tomorrow');
 Route::get('event/week', 'EventController@week')->name('week');
 
-Route::get('/location', function()
-{
+Route::get('/location', function() {
     return view('event.location');
 });
