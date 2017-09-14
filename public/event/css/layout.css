@@ -1,0 +1,38 @@
+.navbar-default {
+    background-color: #f8f8f8;
+    border-color: #e7e7e7;
+    padding: 10px;
+}
+header {
+     position: absolute;
+ }
+.content-wrapper1 {
+    z-index: 300;
+    margin-top: 410px;
+}
+.contentInner1 {
+    background-color: #fff;
+    height:150px;
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,.3);
+    position: relative;
+    border-radius: 5px;
+    padding: 2em;
+    font-size: 18px;
+    text-align: justify;
+    color: #252728;
+    padding-top: 40px;
+}
+.panel-default {
+    border-color: #ddd;
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,.3);
+}
+.dropdown-menu > li > a {
+    display: block;
+    clear: both;
+    font-weight: normal;
+    line-height: 1.42857143;
+    color: #333;
+    white-space: nowrap;
+    padding-top: 15px;
+    padding-left: 10px;
+}
