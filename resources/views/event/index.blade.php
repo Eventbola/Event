@@ -46,21 +46,6 @@
                             <div class="col-md-offset-2 col-md-8">
                                 <form action="#" method="#" role="search" class="form-horizontal">
                                     <div class="input-group">
-                                        <div class="input-group-btn search-panel">
-                                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                                                <span id="search_concept">Filter by</span> <span class="caret"></span>
-                                            </button>
-                                            <ul class="dropdown-menu" role="menu">
-                                                <li><a href="#contains">All Dates</a></li>
-                                                <li><a href="#its_equal">Today</a></li>
-                                                <li><a href="#greather_than">Tomorrow</a></li>
-                                                <li><a href="#less_than">This week</a></li>
-                                                <li><a href="#less_than">This weekend</a></li>
-                                                <li><a href="#less_than">Next week</a></li>
-                                                <li class="divider"></li>
-                                                <li><a href="#all">Next month</a></li>
-                                            </ul>
-                                        </div>
                                         <input type="hidden" name="search_param" value="all" id="search_param">
                                         <input type="text" class="form-control" name="x" placeholder="Search event" id="search-data">
                                         <span class="input-group-btn">
@@ -85,7 +70,7 @@
                         <div class="panel panel-default">
                             <div class="panel-body">
                                 <div class="blog-img" >
-                                    <img src="image/{{$event->image}}" class="img-responsive img-thumbnail" style="width:600px;height:180px">
+                                    <img src="image/{{$event->image}}" class="img-responsive " style="width:600px;height:180px">
                                 </div>
                                 <div class="blog-text" style="line-height:70%;padding-top:15px">
                                    <p style="color:green;" >{{$event->time_start}}</p>
@@ -99,7 +84,20 @@
                                         <a href="" title="share"><i class="fa fa-share-square-o" aria-hidden="true" style="font-size:20px;color:green"></i> share</a>
                                     </div>
                                     <div class="col-md-4 col-xs-4">
-                                        <a href="" title="save"> <i class="fa fa-bookmark" aria-hidden="true" style="font-size:20px;color:blue"></i> save</a>
+                                        @if($save_events == null)
+                                            <a href="saveEvent/{{$event->id}}" title="save"><i class="fa fa-bookmark" hidden="true" style="font-size:20px;color:blue"></i> save</a>
+                                        @else
+                                            {{$test = false}}
+                                            @foreach($save_events as $save_event)
+                                                @if($event->id == $save_event->event_id)
+                                                    <a href="unsaveEvent/{{$save_event->event_id}}"><i class="fa fa-check" aria-hidden="true" {{$test = true}}></i></a>
+                                                @endif
+                                            @endforeach
+                                            @if($test == false)
+                                                <a href="saveEvent/{{$event->id}}" title="save"><i class="fa fa-bookmark" aria-hidden="true" style="font-size:20px;color:blue"></i> save</a>
+                                            @endif
+
+                                        @endif
                                     </div>
                                 </div>
                             </div>

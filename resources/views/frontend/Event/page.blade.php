@@ -152,21 +152,6 @@
     </header>
     <div class="content-wrapper" style="background-color: #f5f8fa">
         <div class="container">
-            {{--<div class="row">--}}
-            {{--<div class="col-md-8">--}}
-            {{--<h2 class="m-0" style="text-align: left">Event name:--}}
-            {{--<span>"{{$event->title}}"</span>--}}
-            {{--</h2>--}}
-            {{--</div>--}}
-            {{--<div class="col-md-4">--}}
-            {{--<div class="form-group">--}}
-            {{--<a href="" class="btn btn-success btn-lg btn-block">Register</a>--}}
-            {{--</div>--}}
-            {{--</div>--}}
-
-            {{--</div>--}}
-
-
             <div class="clearfix"></div>
             <br>
             <div class="col-md-12">
@@ -248,102 +233,55 @@
                                      class="img-responsive center-block">
                             </div>
                         </div>
-                        <div class="col-md-12">
-                            <input id="aa" class="form-control" type="text" placeholder="Search Box" style="position:static; width: 500px" value="{{$event->location}}">
-                            <br>
-                            <br>
-                            <br>
-                            <div id="map"></div>
-                            <script>
-                                // This example adds a search box to a map, using the Google Place Autocomplete
-                                // feature. People can enter geographical searches. The search box will return a
-                                // pick list containing a mix of places and predicted search terms.
-
-                                // This example requires the Places library. Include the libraries=places
-                                // parameter when you first load the API. For example:
-                                // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
-
-                                function initAutocomplete() {
-                                    var map = new google.maps.Map(document.getElementById('map'), {
-                                        center: {lat: 11.562108, lng: 104.888535},
-                                        zoom: 13,
-                                        mapTypeId: 'roadmap'
-                                    });
-
-                                    // Create the search box and link it to the UI element.
-                                    var input = document.getElementById('aa');
-                                    var searchBox = new google.maps.places.SearchBox(input);
-                                    map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
-
-                                    // Bias the SearchBox results towards current map's viewport.
-                                    map.addListener('bounds_changed', function () {
-                                        searchBox.setBounds(map.getBounds());
-                                    });
-
-                                    var markers = [];
-                                    // Listen for the event fired when the user selects a prediction and retrieve
-                                    // more details for that place.
-                                    searchBox.addListener('places_changed', function () {
-                                        var places = searchBox.getPlaces();
-
-                                        if (places.length == 0) {
-                                            return;
-                                        }
-
-                                        // Clear out the old markers.
-                                        markers.forEach(function (marker) {
-                                            marker.setMap(null);
-                                        });
-                                        markers = [];
-
-                                        // For each place, get the icon, name and location.
-                                        var bounds = new google.maps.LatLngBounds();
-                                        places.forEach(function (place) {
-                                            if (!place.geometry) {
-                                                console.log("Returned place contains no geometry");
-                                                return;
-                                            }
-                                            var icon = {
-                                                url: place.icon,
-                                                size: new google.maps.Size(71, 71),
-                                                origin: new google.maps.Point(0, 0),
-                                                anchor: new google.maps.Point(17, 34),
-                                                scaledSize: new google.maps.Size(25, 25)
-                                            };
-
-                                            // Create a marker for each place.
-                                            markers.push(new google.maps.Marker({
-                                                map: map,
-                                                icon: icon,
-                                                title: place.name,
-                                                position: place.geometry.location
-                                            }));
-
-                                            if (place.geometry.viewport) {
-                                                // Only geocodes have viewport.
-                                                bounds.union(place.geometry.viewport);
-                                            } else {
-                                                bounds.extend(place.geometry.location);
-                                            }
-                                        });
-                                        map.fitBounds(bounds);
-                                    });
-                                }
-
-                            </script>
-                            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCE9rYyj-NUbxuvSJItH1ZI89FxtsYUxgs&libraries=places&callback=initAutocomplete"
-                                    async defer></script>
-
-                        </div>
                     </div>
+                    <div id="map"></div>
+                </div>
 
                 </div>
             </div>
         </div>
     </div>
-@endsection
-{{--@section('after-script')--}}
-    {{--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCE9rYyj-NUbxuvSJItH1ZI89FxtsYUxgs&libraries=places&callback=initAutocomplete"--}}
-            {{--async defer></script>--}}
 
-{{--@endsection--}}
+
+@endsection
+@section('after-scripts')
+    <script>
+        var markers = [];
+        var Locations = [];
+        var item = [];
+        item.push('title');
+        item.push({{ $event->lat }})
+        item.push({{ $event->lng }})
+        Locations.push(item);
+
+        function setMarkers(datalocations, map) {
+            for (var i = 0; i < datalocations.length; i++) {
+
+                var myLatLng = new google.maps.LatLng(datalocations[i][1], datalocations[i][2]);
+                var marker = new google.maps.Marker({
+                    position: myLatLng,
+                    map: map,
+                    animation: google.maps.Animation.DROP,
+                    title: datalocations[i][0],
+                    zIndex: datalocations[i][3]
+                });
+
+                // Push marker to markers array
+                markers.push(marker);
+            }
+            return markers;
+        }
+
+        function initAutocomplete() {
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 6,
+                center: {lat: 11.562108, lng: 104.888535}
+            });
+            setMarkers(Locations, map);
+
+        }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCE9rYyj-NUbxuvSJItH1ZI89FxtsYUxgs&libraries=places&callback=initAutocomplete"
+            async defer></script>
+
+@endsection

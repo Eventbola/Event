@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Event;
 use App\Models\Request;
+use App\Models\SaveEvent;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 
@@ -15,7 +17,19 @@ class FrontendController extends Controller
     /**
      * @return \Illuminate\View\View
      */
-    public function index()
+    public function home()
+    {
+        $save_events = SaveEvent::where('user_id', \auth()->id())->get();
+        $events = Event::all();
+        if (count($save_events) > 0) {
+            return view('event.index', compact('save_events', 'events', 'array_user_store_event'));
+        } else {
+            $save_events = null;
+            return view('event.index', compact('save_events', 'events', 'array_user_store_event'));
+        }
+    }
+
+        public function index()
     {
         return view('event.index');
     }
@@ -53,8 +67,6 @@ class FrontendController extends Controller
         $users = DB::table('users')
             ->whereNotIn('id', $arrayUserInvited)
             ->get();
-
-
         return Response::json(['status' => true, 'data' => $users, 'user_id' => auth()->user()->id]);
     }
 }

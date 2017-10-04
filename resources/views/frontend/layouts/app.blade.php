@@ -34,6 +34,7 @@
         </style>
         @yield('after-styles')
 
+
         <!-- Scripts -->
         <script>
             window.Laravel = <?php echo json_encode([
@@ -55,8 +56,10 @@
         @yield('before-scripts')
         {{--{!! Html::script(mix('js/frontend.js')) !!}--}}
 
+        <script src="{{asset('js/share.js')}}"></script>
         <script src="{{ asset('library/bootstrap/js/bootstrap.js')}}"></script>
         <script src="{{ asset('library/bootstrap/js/jquery.min.js')}}"></script>
+        <script src="{{ asset('library/bootstrap/js/jquery.sidebarFix.js')}}"></script>
         <script type="text/javascript" src="{{ asset('bower_components/jquery/dist/jquery.min.js') }}"></script>
         <script src="{{ asset('event/js/layout.js')}}"></script>
         <script type="text/javascript" src="{{ asset('bower_components/moment/moment.js') }}"></script>

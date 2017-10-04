@@ -300,11 +300,14 @@
                             <input id="pac-input"
                                    class="form-control"
                                    type="text"
-                                   name="location-test"
+                                   name="location"
                                    placeholder="put your location here or search by google map"
                                    required="required"
                                    style=" width: 400px">
+                            <input class="form-control" type="hidden" name="lat" id="lat">
+                            <input class="form-control" type="hidden" name="lng" id="lng">
                             <div id="map"></div>
+
 
                         </div>
                     </div>
@@ -384,22 +387,6 @@
                                    placeholder="Add a link to your ticket website">
                         </div>
                     </div>
-
-                    {{--<hr>--}}
-                    {{--<h3>Options</h3>--}}
-                    {{--Choose who you want to add to join in your event--}}
-                    {{--<br>--}}
-                    {{--<br>--}}
-                    {{--<div class="form-group">--}}
-                    {{--<label class="col-md-3 control-label">Co-hosts</label>--}}
-                    {{--<div class="col-md-9">--}}
-                    {{--<input class="form-control"--}}
-                    {{--type="text"--}}
-                    {{--name="co-host"--}}
-                    {{--placeholder="add friends">--}}
-                    {{--</div>--}}
-                    {{--</div>--}}
-
                     <div class="clearfix"></div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary">Save</button>
@@ -414,7 +401,6 @@
     </div>
 @endsection
 @section('after-scripts')
-
     <script type="text/javascript"
             src="{{asset('bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('bower_components/moment/src/moment.js')}}"></script>
@@ -440,7 +426,7 @@
             var myLatLng = {lat: 11.562108, lng: 104.888535};
             var map = new google.maps.Map(document.getElementById('map'), {
                 center: myLatLng,
-                zoom: 8,
+                zoom: 6,
                 mapTypeId: 'roadmap'
             });
 
@@ -458,6 +444,7 @@
             // Listen for the event fired when the user selects a prediction and retrieve
             // more details for that place.
             searchBox.addListener('places_changed', function () {
+
                 var places = searchBox.getPlaces();
 
                 if (places.length == 0) {
@@ -473,26 +460,25 @@
                 // For each place, get the icon, name and location.
                 var bounds = new google.maps.LatLngBounds();
                 places.forEach(function (place) {
+
+
                     if (!place.geometry) {
                         console.log("Returned place contains no geometry");
                         return;
                     }
-                    var icon = {
-                        url: place.icon,
-                        size: new google.maps.Size(71,71),
-                        origin: new google.maps.Point(0, 0),
-                        anchor: new google.maps.Point(17, 34),
-                        scaledSize: new google.maps.Size(25, 25)
-                    };
+                    var marker = new google.maps.Marker({
+                        position : place.geometry.location,
+                        map : map,
+                        draggable : true,
+                    });
+                    var location = place.geometry.location;
+
+                    var lat = location.lat();
+                    var lng = location.lng();
+                    $('#lat').val(lat);
+                    $('#lng').val(lng);
 
                     // Create a marker for each place.
-                    markers.push(new google.maps.Marker({
-                        map: map,
-                        icon: icon,
-                        title: place.name,
-                        position: place.geometry.location
-                    }));
-
                     if (place.geometry.viewport) {
                         // Only geocodes have viewport.
                         bounds.union(place.geometry.viewport);
@@ -506,6 +492,6 @@
 
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCE9rYyj-NUbxuvSJItH1ZI89FxtsYUxgs&libraries=places&callback=initAutocomplete"
-            async defer></script>
+    async defer></script>
 
 @endsection

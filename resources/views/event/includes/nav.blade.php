@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default" style="background-color:white;padding:12px">
+<nav class="navbar navbar-default">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
@@ -31,7 +31,7 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"
                            style="position:relative; padding-left:50px;">
-                            <img src="img/profile/{{ Auth::user()->image }}" alt="no-image"
+                            <img src="/img/profile/{{ Auth::user()->image }}" alt="no-image"
                                  style="width:32px; height:32px; position:absolute; top:10px; left:10px; border-radius:50%">
                             {{ Auth::user()->name }} <span class="caret"></span>
                         </a>
@@ -44,6 +44,7 @@
                             <li>{{ link_to_route('frontend.auth.logout', trans('navs.general.logout')) }}</li>
                             <li><a href="{{route('manage')}}">Manage Event</a></li>
                             <li>{{ link_to_route('calendar', trans('navs.frontend.calendar')) }}</li>
+                            <li><a href="{{route('savedEvent')}}">Save event &nbsp {{count($save_events)}}</a></li>
                             {{--<li><a href="">Saved  0 </a></li>--}}
                             {{--<li><a href="">Organize profile</a></li>--}}
                         </ul>

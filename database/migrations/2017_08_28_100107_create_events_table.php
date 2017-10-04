@@ -18,6 +18,8 @@ class CreateEventsTable extends Migration
             $table->integer('user_id');
             $table->string('title');
             $table->string('location');
+            $table->float('lat');
+            $table->float('lng');
             $table->dateTime('time_start');
             $table->dateTime('time_end');
             $table->string('image');

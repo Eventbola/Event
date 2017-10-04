@@ -5,6 +5,7 @@ namespace App\Models\Access\User;
 use App\Models\Event;
 use App\Models\Notification;
 use App\Models\Request;
+use App\Models\SaveEvent;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Access\User\Traits\UserAccess;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -76,6 +77,11 @@ class User extends Authenticatable
     }
     public  function requests(){
         return  $this->hasMany(Request::class);
+    }
+
+    //today create save event
+    public function save_events(){
+        return $this->hasMany(SaveEvent::class );
     }
 
 }

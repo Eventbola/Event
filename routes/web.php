@@ -70,6 +70,20 @@ Route::get('event/today', 'EventController@today')->name('today');
 Route::get('event/tomorrow', 'EventController@tomorrow')->name('tomorrow');
 Route::get('event/week', 'EventController@week')->name('week');
 
-Route::get('/location', function() {
-    return view('event.location');
-});
+Route::get('/location', 'LocationController@location')->name('location');
+Route::get('/test', 'LocationController@store')->name('store');
+Route::get('/viewlocation', 'LocationController@viewlocation');
+
+
+Route::get('saveEvent/{id}', 'SaveEventController@saveEvent')->name('saveEvent');
+
+Route::get('unsaveEvent/{id}', 'SaveEventController@unsaveEvent')->name('unsaveEvent');
+
+Route::get('saveEvent', 'SaveEventController@index')->name('savedEvent');
+
+
+
+
+
+
+

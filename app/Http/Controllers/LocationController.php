@@ -12,10 +12,18 @@ class LocationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function location()
     {
         //
+        return view('event.location');
     }
+
+
+    public function viewlocation(){
+        $location=location::all();
+        return view('event.view')->with('locations',$location);
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -27,6 +35,7 @@ class LocationController extends Controller
         //
     }
 
+
     /**
      * Store a newly created resource in storage.
      *
@@ -35,7 +44,12 @@ class LocationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $location = new location();
+        $location->name_location = $request->name_location;
+        $location->lat = $request->lat;
+        $location->lng=$request->lng;
+        $location->save();
+        return redirect('location');
     }
 
     /**
