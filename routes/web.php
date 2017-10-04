@@ -36,7 +36,7 @@ Route::group(['namespace' => 'Backend', 'prefix' => 'admin', 'as' => 'admin.', '
 });
 
 Route::get('/mail', 'MailController@index');
-Route::get('home', 'EventController@home')->name('home');
+Route::get('', 'EventController@home')->name('home');
 Route::get('event/create', 'EventController@create')->name('create');
 Route::get('event/page/{id}', 'EventController@page')->name('page');
 Route::get('event/manage', 'EventController@show')->name('manage');
@@ -51,25 +51,33 @@ Route::get('autocomplete',array('as'=>'autocomplete','uses'=>'EventController@au
 Route::post('/account', 'Frontend\User\ProfileController@update_avatar')->name('account');
 
 
-//Route::get('/profile', 'ProfileController@profile');
-//Route::post('/profile', 'ProfileController@update_avatar')->name('account');
-//Route::get('/mail', 'MailController@index');
+Route::get('/profile', 'ProfileController@profile');
+Route::post('/profile', 'ProfileController@update_avatar')->name('account');
+Route::get('/mail', 'MailController@index');
 /**
  *  send mail, record mail sent,
  */
 Route::post('/event/email', 'EventController@email')->name('email');
-Route::get('/event/request', 'RequestController@store')->name('request');
+Route::post('/event/request', 'RequestController@store')->name('request');
 Route::get('/event/accept', 'EventController@accept')->name('accept');
 
 
 
 Route::post('/search-data','EventController@searchData')->name('search-data');
-//Route::get('/nav','EventController@navbar');
+Route::get('/nav','EventController@navbar');
 Route::get('event/month', 'EventController@month')->name('month');
 Route::get('event/today', 'EventController@today')->name('today');
 Route::get('event/tomorrow', 'EventController@tomorrow')->name('tomorrow');
 Route::get('event/week', 'EventController@week')->name('week');
 
+Route::get('/location', function() {
+    return view('event.location');
+});
+Route::get('test', 'EventController@test');
+Route::get('event/notification/{id}', 'EventController@notification')->name('notification');
+Route::get('event/destroyrequest/{id}', 'RequestController@destroy')->name('destroyrequest');
+Route::get('event/user_notifications/{id}/event/{user}/user', 'EventController@user_notifications')->name('user_notifications');
+Route::post('event/send/participate/', 'EventController@participate')->name('participate');
 Route::get('/location', 'LocationController@location')->name('location');
 Route::get('/test', 'LocationController@store')->name('store');
 Route::get('/viewlocation', 'LocationController@viewlocation');

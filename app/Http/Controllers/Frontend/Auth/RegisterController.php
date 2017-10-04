@@ -54,7 +54,7 @@ class RegisterController extends Controller
             $user = $this->user->create($request->only('first_name', 'last_name', 'email', 'password'));
             event(new UserRegistered($user));
 
-            return redirect($this->redirectPath())->withFlashSuccess(
+            return redirect()->route('home')->withFlashSuccess(
                 config('access.users.requires_approval') ?
                     trans('exceptions.frontend.auth.confirmation.created_pending') :
                     trans('exceptions.frontend.auth.confirmation.created_confirm')
@@ -63,7 +63,7 @@ class RegisterController extends Controller
             access()->login($this->user->create($request->only('first_name', 'last_name', 'email', 'password')));
             event(new UserRegistered(access()->user()));
 
-            return redirect($this->redirectPath());
+            return redirect()->route('home');
         }
     }
 }

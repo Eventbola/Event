@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Request as RequestEmail;
+use App\Helpers\Auth\Auth;
+use App\Models\Request as Register;
 use Illuminate\Http\Request;
 
 class RequestController extends Controller
@@ -30,25 +31,29 @@ class RequestController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        $event = new RequestEmail();
-        $event->user_inviter_id = $request->user_event_id;
-        $event->user_invited_id = $request->user;
-        $event->event_id = $request->event;
-        $event->_token = $request->_token;
+        if (\Illuminate\Support\Facades\Auth::check() == false) {
+            return redirect('login');
+        }
+        $event = new Register();
+        $event->user_requester_id = auth()->id();
+        $event->user_requested_id = $request->user_id;
+        $event->event_id = $request->id;
+        $event->token = $request->_token;
 
         $event->save();
-            return redirect(route('manage')) ;
+//            return redirect(route('page')) ;
+        return redirect('event/page/' . $event->event_id);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Request  $request
+     * @param  \App\Models\Request $request
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request)
@@ -59,7 +64,7 @@ class RequestController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Request  $request
+     * @param  \App\Models\Request $request
      * @return \Illuminate\Http\Response
      */
     public function edit(Request $request)
@@ -70,8 +75,8 @@ class RequestController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Request  $request
+     * @param  \Illuminate\Http\Request $request
+     * @param  \App\Models\Request $request
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Request $request)
@@ -82,11 +87,17 @@ class RequestController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Request  $request
+     * @param  \App\Models\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request)
+    public function destroy($id)
     {
-        //
+
+
+        $delete = \App\Models\Request::whereRaw('event_id = ? and user_requester_id =?', [$id, \auth()->id()])->get();
+        $delete = $delete->getIterator()[0];
+        $delete->delete();
+        return redirect('event/page/' . $delete->event_id);
+
     }
 }

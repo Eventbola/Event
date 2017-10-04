@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\KKKK;
 use App\Models\Event;
+//use App\Models\Event;
 use App\Models\Request;
 use App\Models\SaveEvent;
 use Illuminate\Support\Facades\DB;
@@ -31,7 +33,8 @@ class FrontendController extends Controller
 
         public function index()
     {
-        return view('event.index');
+        $event = Event::get()->all();
+        return view('frontend.auth.index', compact('event'));
     }
 
     /**
@@ -44,29 +47,32 @@ class FrontendController extends Controller
 
     public function getInvitedUsers()
     {
-        $userInvited = Request::where([
+        $userInvited = KKKK::where([
             ['event_id', \request('event_id')],
             ['user_inviter_id', auth()->user()->id]
         ])->get();
 
-       // dd($userInvited);
+        // dd($userInvited);
 
         $arrayUserInvited = array();
-        if(count($userInvited) >0){
-            foreach ($userInvited as $item){
+        if (count($userInvited) > 0) {
+            foreach ($userInvited as $item) {
                 array_push($arrayUserInvited, $item->user_invited_id);
             }
         }
 
         $restrict = array(1, 2, 3, auth()->user()->id);
 
-        foreach ($restrict as $item){
+        foreach ($restrict as $item) {
             array_push($arrayUserInvited, $item);
         }
 
         $users = DB::table('users')
             ->whereNotIn('id', $arrayUserInvited)
+            ->where('confirmed', 1)
             ->get();
+
+
         return Response::json(['status' => true, 'data' => $users, 'user_id' => auth()->user()->id]);
     }
 }

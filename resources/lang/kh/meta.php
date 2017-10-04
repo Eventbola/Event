@@ -2,7 +2,7 @@
 
 return [
     'event'=>[
-        'name'=>'Nom de event',
-        'photo'=>'Image de event'
+        'name'=>'Event Name',
+        'photo'=>'Event Photo'
     ],
 ];

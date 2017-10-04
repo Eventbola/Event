@@ -88,6 +88,7 @@
         #target {
             width: 345px;
         }
+
         /**
 
          */
@@ -258,7 +259,8 @@
         <hr>
         <div class="row">
             <div class="col-md-12" style="width: 70%">
-                <form class="form-horizontal" action="{{route('update',[$event->id])}}" method="POST" enctype="multipart/form-data" file="true">
+                <form class="form-horizontal" action="{{route('update',[$event->id])}}" method="POST"
+                      enctype="multipart/form-data" file="true">
                     {{ csrf_field() }}
                     <h3>Basic Info</h3>
                     <br>
@@ -266,8 +268,8 @@
                         <label class="col-md-3 control-label">{{trans('meta.event.photo')}} </label>
                         <div class=" col-md-9 ">
                             <input class="from-control"
-                                    type="file"
-                                    value="{{$event->image}}"
+                                   type="file"
+                                   value="{{$event->image}}"
                                    required="required"
                                    name="image"
                                    placeholder="put your image here">
@@ -290,11 +292,11 @@
                         <label class=" col-md-3 control-label">Location</label>
                         <div class="col-md-9">
                             {{--<input class="form-control"--}}
-                                   {{--type="text"--}}
-                                   {{--value="{{$event->location}}"--}}
-                                   {{--required="required"--}}
-                                   {{--name="location"--}}
-                                   {{--placeholder="include a place or address">--}}
+                            {{--type="text"--}}
+                            {{--value="{{$event->location}}"--}}
+                            {{--required="required"--}}
+                            {{--name="location"--}}
+                            {{--placeholder="include a place or address">--}}
                             <input id="pac-input"
                                    class="form-control"
                                    value="{{$event->location}}"
@@ -441,12 +443,22 @@
                     <div class="form-group">
                         <label class="col-md-3 control-label"> Keywords</label>
                         <div class="col-md-9">
-                            <input class="form-control"
-                                   type="text"
-                                   name="keyword"
+                            {{--<input class="form-control"--}}
+                            {{--type="text"--}}
+                            {{--name="keyword"--}}
+                            {{--value="{{$event->keyword}}"--}}
+                            {{--required="required"--}}
+                            {{--placeholder="Type and select keyword from the list of results">--}}
+                            {{--<input type="text"--}}
+                            {{--name="keyword"--}}
+                            {{--value="{{$event->keyword}}"--}}
+                            {{--data-role="tagsinput"--}}
+                            {{--class="form-control">--}}
+                            <input type="text"
                                    value="{{$event->keyword}}"
-                                   required="required"
-                                   placeholder="Type and select keyword from the list of results">
+                                   name="keyword"
+                                   data-role="tagsinput"
+                                   placeholder="Add keyword"/>
                         </div>
                     </div>
 
@@ -473,23 +485,22 @@
                     {{--<br>--}}
                     {{--<br>--}}
                     {{--<div class="form-group">--}}
-                        {{--<label class="col-md-3 control-label">Co-hosts</label>--}}
-                        {{--<div class="col-md-9">--}}
-                            {{--<input class="form-control"--}}
-                                   {{--type="text"--}}
-                                   {{--name="co-host"--}}
-                                   {{--placeholder="add friends">--}}
-                        {{--</div>--}}
+                    {{--<label class="col-md-3 control-label">Co-hosts</label>--}}
+                    {{--<div class="col-md-9">--}}
+                    {{--<input class="form-control"--}}
+                    {{--type="text"--}}
+                    {{--name="co-host"--}}
+                    {{--placeholder="add friends">--}}
+                    {{--</div>--}}
                     {{--</div>--}}
 
                     <div class="clearfix"></div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary" >Update</button>
+                        <button type="submit" class="btn btn-primary">Update</button>
                     </div>
 
                 </form>
             </div>
-
 
 
         </div>

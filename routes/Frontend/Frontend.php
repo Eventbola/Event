@@ -4,7 +4,9 @@
  * Frontend Controllers
  * All route names are prefixed with 'frontend.'.
  */
-Route::get('/', 'FrontendController@home')->name('index');
+
+//Route::get('/', 'FrontendController@home')->name('index');
+Route::get('/home', 'FrontendController@index')->name('index');
 Route::get('macros', 'FrontendController@macros')->name('macros');
 Route::get('contact', 'ContactController@index')->name('contact');
 Route::post('contact/send', 'ContactController@send')->name('contact.send');

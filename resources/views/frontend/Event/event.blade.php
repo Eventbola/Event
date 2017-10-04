@@ -252,10 +252,59 @@
             text-shadow: 0px 16px 10px rgba(0, 0, 0, 0.3);
             transform: translate(0, -8);
         }
+
+        /*.invisible {*/
+        /*visibility: hidden;*/
+        /*}*/
+        /*.container {*/
+        /*width: 375px;*/
+        /*}*/
+        .tags-container {
+            margin: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            border: solid 1px #cfd7e6;
+        }
+
+        .tags-container > input {
+            flex: 1 0 auto;
+            margin: 5px;
+            border: none;
+        }
+
+        .tags-container > input:focus {
+            outline: none;
+        }
+
+        .tag {
+            margin: 5px;
+            background-color: #eceff2;
+            padding: 2px 24px 2px 8px;
+            font-size: 15px;
+            color: #2a4a4b;
+            position: relative;
+            border-radius: 4px;
+            display: inline-block;
+            max-width: 161px;
+            white-space: nowrap;
+            text-align: center;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+
+        .tag::after {
+            content: 'x';
+            position: absolute;
+            right: 6px;
+            top: 2px;
+            font-size: 12px;
+            color: #a7b8d1;
+        }
     </style>
 @endsection
 @section('content')
-    <div class="container" style="background-color:white">
+    <div class="container">
         <label style="font-size: 30px">Create an Event</label>
         <hr>
         <div class="row">
@@ -288,15 +337,14 @@
                     </div>
 
                     <div class="form-group">
-
                         <label class=" col-md-3 control-label">Location</label>
                         <div class="col-md-9">
                             {{--<input class="form-control"--}}
                             {{--type="text"--}}
+                            {{--value="{{$event->location}}"--}}
                             {{--required="required"--}}
                             {{--name="location"--}}
                             {{--placeholder="include a place or address">--}}
-
                             <input id="pac-input"
                                    class="form-control"
                                    type="text"
@@ -307,6 +355,9 @@
                             <input class="form-control" type="hidden" name="lat" id="lat">
                             <input class="form-control" type="hidden" name="lng" id="lng">
                             <div id="map"></div>
+
+                            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCE9rYyj-NUbxuvSJItH1ZI89FxtsYUxgs&libraries=places&callback=initAutocomplete"
+                                    async defer></script>
 
 
                         </div>
@@ -363,12 +414,30 @@
 
                     <div class="form-group">
                         <label class="col-md-3 control-label"> Keywords</label>
-                        <div class="col-md-9">
-                            <input class="form-control"
-                                   type="text"
-                                   name="keyword"
-                                   required="required"
-                                   placeholder="Type and select keyword from the list of results">
+                        <div class="col-md-9" style="margin-left: -10px;margin-top: -4px">
+                            <div id="tags" class="tags-container">
+                                <input id="search"
+                                       type="text"
+                                       name="keyword"
+                                       placeholder="type and enter"/>
+
+
+                            </div>
+                            {{--<input class="form-control"--}}
+                            {{--type="text"--}}
+                            {{--name="keyword"--}}
+                            {{--required="required"--}}
+                            {{--placeholder="Type and select keyword from the list of results">--}}
+                            {{--<input type="text"--}}
+                            {{--name="keyword"--}}
+                            {{--data-role="tagsinput"--}}
+                            {{--class="form-control">--}}
+                            {{--<input type="text"--}}
+                            {{--value=""--}}
+                            {{--name="keyword"--}}
+                            {{--data-role="tagsinput"--}}
+                            {{--placeholder="Add keyword"/>--}}
+
                         </div>
                     </div>
 
@@ -493,5 +562,4 @@
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCE9rYyj-NUbxuvSJItH1ZI89FxtsYUxgs&libraries=places&callback=initAutocomplete"
     async defer></script>
-
 @endsection

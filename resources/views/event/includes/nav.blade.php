@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-default" style="padding:12px;">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
@@ -30,7 +30,9 @@
                     <li>@include('frontend/Event/email')</li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"
-                           style="position:relative; padding-left:50px;">
+                           style="
+
+                           position:relative; padding-left:50px;">
                             <img src="/img/profile/{{ Auth::user()->image }}" alt="no-image"
                                  style="width:32px; height:32px; position:absolute; top:10px; left:10px; border-radius:50%">
                             {{ Auth::user()->name }} <span class="caret"></span>
@@ -41,12 +43,13 @@
                             @endauth
 
                             <li>{{ link_to_route('frontend.user.account', trans('navs.frontend.user.account'), [], ['class' => active_class(Active::checkRoute('frontend.user.account')) ]) }}</li>
-                            <li>{{ link_to_route('frontend.auth.logout', trans('navs.general.logout')) }}</li>
                             <li><a href="{{route('manage')}}">Manage Event</a></li>
                             <li>{{ link_to_route('calendar', trans('navs.frontend.calendar')) }}</li>
-                            <li><a href="{{route('savedEvent')}}">Save event &nbsp {{count($save_events)}}</a></li>
-                            {{--<li><a href="">Saved  0 </a></li>--}}
-                            {{--<li><a href="">Organize profile</a></li>--}}
+                            @if(count($save_events)>0)
+                                <li><a href="{{route('savedEvent')}}">Save event &nbsp {{count($save_events)}}</a></li>
+                            @else
+                            <li>{{ link_to_route('frontend.auth.logout', trans('navs.general.logout')) }}</li>
+                            @endif
                         </ul>
                     </li>
                 @endif

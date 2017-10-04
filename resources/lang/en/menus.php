@@ -59,6 +59,7 @@ return [
          * Be sure to add the new language in alphabetical order.
          */
         'langs' => [
+            'kh'    => 'Khmer',
             'ar'    => 'Arabic',
             'zh'    => 'Chinese Simplified',
             'zh-TW' => 'Chinese Traditional',

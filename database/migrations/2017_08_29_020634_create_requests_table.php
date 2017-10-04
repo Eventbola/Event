@@ -21,13 +21,13 @@ class CreateRequestsTable extends Migration
                 ->on('events')
                 ->onDelete('cascade');
 
-            $table->integer('user_inviter_id')->unsigned();
-            $table->foreign('user_inviter_id')
+            $table->integer('user_requester_id')->unsigned();
+            $table->foreign('user_requester_id')
                 ->references('id')
                 ->on('users')
                 ->onDelete('cascade');
-            $table->integer('user_invited_id')->unsigned();
-            $table->foreign('user_invited_id')
+            $table->integer('user_requested_id')->unsigned();
+            $table->foreign('user_requested_id')
                 ->references('id')
                 ->on('users')
                 ->onDelete('cascade');
